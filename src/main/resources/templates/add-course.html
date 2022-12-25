@@ -1,0 +1,76 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Course</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <form th:action="@{/courses/add}" th:method="POST">
+                <input id="id" type="hidden" name="id"
+                       th:value="(${course} != null ? ${course.getCourseId()} : '')">
+                <div class="form-group">
+                    <label for="name">Course name</label>
+                    <input type="text"
+                           class="form-control"
+                           id="name"
+                           name="name"
+                           th:value="(${course} != null ? ${course.getName()} : '')"
+                           required
+                           placeholder="Enter course name">
+                </div>
+                </br>
+                <div class="form-group">
+                    <label for="desc">Course description</label>
+                    <input type="text"
+                           class="form-control"
+                           id="desc"
+                           name="desc"
+                           th:value="(${course} != null ? ${course.getDescription()} : '')"
+                           placeholder="Enter description">
+                </div>
+                </br>
+
+                <div class="form-group">
+                    <label>Teacher</label>
+                    <select name="teacher" class="form-control">
+                        <option th:if="${course} != null"
+                                th:selected="${course.getTeacher() != null &&
+                                    course.getTeacher().getId() == t.getId()}"
+                                th:each="t : ${teachers}"
+                                th:value="${t.getId()}"
+                                th:text="${t.getName() + ' ' + t.getSurname()}">
+                        </option>
+                        <option th:if="${course} == null"
+                                th:each="t : ${teachers}"
+                                th:value="${t.getId()}"
+                                th:text="${t.getName() + ' ' + t.getSurname()}">
+                        </option>
+                    </select>
+                </div>
+                </br>
+
+                <div class="form-group">
+                    <label for="type">Type</label>
+                    <select id="type"
+                            name="type">
+                        <option th:if="${course} == null" th:each="type : ${types}" th:value="${type}" th:text="${type}"></option>
+                        <option th:if="${course} != null" th:each="type : ${types}" th:value="${type}" th:text="${type}"
+                                th:selected="${course.getType().toString().equals(type)}"></option>
+                    </select>
+                </div>
+                </br>
+
+                <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+                <a type="button" class="btn btn-primary" th:href="@{/courses}">Back</a>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</th:block>
+</body>
+</html>
