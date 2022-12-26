@@ -35,4 +35,9 @@ public class GradeServiceImpl implements GradeService {
     public void delete(List<Grade> grades) {
         gradeRepositoryJpa.deleteAll(grades);
     }
+
+    @Override
+    public void delete(Grade grade) {
+        gradeRepositoryJpa.delete(grade);
+    }
 }

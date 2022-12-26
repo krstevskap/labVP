@@ -28,6 +28,7 @@ public class ListStudentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext webContext = new WebContext(req, resp, this.getServletContext());
+        resp.setContentType("text/html");
         long courseId = (long) req.getSession().getAttribute("courseId");
         webContext.setVariable("courseId", courseId);
         webContext.setVariable("students", studentService.listAll());

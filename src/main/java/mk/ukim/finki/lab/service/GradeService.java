@@ -12,4 +12,6 @@ public interface GradeService {
     void save(Grade grade);
 
     void delete(List<Grade> grades);
+
+    void delete(Grade grade);
 }

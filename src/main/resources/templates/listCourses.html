@@ -50,20 +50,27 @@
                 </div>
             </td>
             <td class="text-right">
+                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
                 <form th:method="DELETE"
                       th:action="@{'/courses/delete/{id}' (id=${c.getCourseId()})}">
                     <button type="submit">Delete</button>
                 </form>
+                </th:block>
+                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
                 <a th:href="@{'/courses/edit-form/{id}' (id=${c.getCourseId()})}"
                    class="btn">
                     <button type="submit">Edit</button>
                 </a>
+                </th:block>
             </td>
         </tr>
         </tbody>
     </table>
-
+<!--    <th:block sec:authorize="hasRole('ROLE_ADMIN')">-->
     <a th:href="@{/courses/add-form}" class="btn">Add new course</a>
+<!--    </th:block>-->
+<!--    <a href="/logout" >Log out</a>-->
+
 </main>
 </body>
 </html>

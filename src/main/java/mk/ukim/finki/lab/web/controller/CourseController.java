@@ -8,10 +8,12 @@ import mk.ukim.finki.lab.service.GradeService;
 import mk.ukim.finki.lab.service.StudentService;
 import mk.ukim.finki.lab.service.TeacherService;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -61,6 +63,7 @@ public class CourseController {
     }
 
     @GetMapping("/add-form")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getAddCoursePage(Model model) {
         model.addAttribute("teachers", this.teacherService.findAll());
         model.addAttribute("types", types);
@@ -114,10 +117,24 @@ public class CourseController {
 
         Course c = courseService.getById(course);
         Student s = studentService.searchByUsername(student);
-        Grade g = new Grade(grade, s, c, date);
 
+        if (gradeService.findByCourseIdAndStudentUsername(course, student) != null) {
+            gradeService.delete(gradeService.findByCourseIdAndStudentUsername(course, student));
+        }
+        Grade g = new Grade(grade, s, c, date);
         gradeService.save(g);
 
         return "redirect:/courses";
+    }
+
+    @GetMapping("/access_denied")
+    public String accessDeniedPage() {
+        return "access_denied";
+    }
+
+    @GetMapping("/logOut")
+    public String logOut(HttpServletRequest request) {
+        request.getSession().invalidate();
+        return "listCourses";
     }
 }

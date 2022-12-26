@@ -26,8 +26,10 @@ public class CourseListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext webContext = new WebContext(req, resp, req.getServletContext());
+        resp.setContentType("text/html");
         webContext.setVariable("courses", courseService.listAll());
         this.springTemplateEngine.process("listCourses.html", webContext, resp.getWriter());
+
     }
 
     @Override
